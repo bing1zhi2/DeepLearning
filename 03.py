@@ -9,4 +9,4 @@ init = tf.global_variables_initializer()
 with tf.Session() as sess:
     init.run()
     result = f.eval()
-print(result)
+    print(result)

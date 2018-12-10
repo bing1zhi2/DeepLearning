@@ -1,5 +1,5 @@
-import tensorflow as tf
-from tensorflow.examples.tutorials.mnist import input_data
+import tensorflow_pra as tf
+from tensorflow_pra.examples.tutorials.mnist import input_data
 
 
 mnist = input_data.read_data_sets('G:\ML\dataset\MNIST_data_bak', one_hot=True)

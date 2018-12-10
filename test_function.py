@@ -1,6 +1,6 @@
 # -*- coding:UTF-8 -*-
 import numpy as np
-import tensorflow as tf
+import tensorflow_pra as tf
 
 # 基本常量
 x = tf.constant([[1.0, 2.0]])

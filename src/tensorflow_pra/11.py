@@ -1,4 +1,4 @@
-import tensorflow as tf
+import tensorflow_pra as tf
 A = tf.placeholder(tf.float32, shape=(None, 3))
 B = A + 5
 

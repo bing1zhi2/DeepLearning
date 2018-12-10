@@ -1,4 +1,4 @@
-import tensorflow as tf
+import tensorflow_pra as tf
 
 with tf.device('/cpu:0'):
     x = tf.Variable(3,name="x")

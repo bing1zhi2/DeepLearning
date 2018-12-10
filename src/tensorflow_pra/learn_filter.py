@@ -4,7 +4,7 @@
 @author: chenhao
 """
 
-import tensorflow as tf
+import tensorflow_pra as tf
 
 # [batch, in_height, in_width, in_channels] [训练时一个batch的图片数量, 图片高度, 图片宽度, 图像通道数]
 input = tf.Variable(tf.constant(1.0, shape=[1, 5, 5, 1]))

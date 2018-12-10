@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-from tensorflow.examples.tutorials.mnist import input_data
-import tensorflow as tf
+from tensorflow_pra.examples.tutorials.mnist import input_data
+import tensorflow_pra as tf
 
 my_mnist = input_data.read_data_sets("MNIST_data_bak/", one_hot=True)
 

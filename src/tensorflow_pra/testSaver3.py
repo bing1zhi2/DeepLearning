@@ -1,6 +1,6 @@
 # coding:utf-8
 # 0导入模块 ，生成模拟数据集
-import tensorflow_pra as tf
+import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 

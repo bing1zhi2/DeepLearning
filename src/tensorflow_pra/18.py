@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.datasets import load_sample_images
-import tensorflow_pra as tf
+import tensorflow as tf
 import matplotlib.pyplot as plt
 
 dataset = np.array(load_sample_images().images, dtype=np.float32)

@@ -1,4 +1,7 @@
 # coding=utf-8
+'''
+把protobuf 文件导出成txt格式
+'''
 import tensorflow as tf
 from google.protobuf import text_format
 from tensorflow.python.platform import gfile

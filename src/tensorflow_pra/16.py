@@ -1,7 +1,7 @@
-import tensorflow_pra as tf
-from tensorflow_pra.examples.tutorials.mnist import input_data
+import tensorflow as tf
+from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
-from tensorflow_pra.contrib.layers import fully_connected
+from tensorflow.contrib.layers import fully_connected
 
 
 # 构建图阶段

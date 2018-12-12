@@ -1,4 +1,4 @@
-import tensorflow_pra as tf
+import tensorflow as tf
 import numpy as np
 from sklearn.datasets import fetch_california_housing
 

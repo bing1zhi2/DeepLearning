@@ -6,7 +6,7 @@ from scipy import misc
 import numpy as np
 from tensorflow_pra.espcn_demo.espcn import ESPCN
 from tensorflow_pra.espcn_demo.prepare_data import *
-from tensorflow_pra.espcn_demo import model_loader
+# from tensorflow_pra.espcn_demo import model_loader
 from tensorflow_pra.espcn_demo import predict_param as param
 
 
@@ -68,6 +68,7 @@ class SR_ESPCN:
 
         lr_image = tf.placeholder(tf.uint8)
         sr_image = net.generate(lr_image)
+        print(sr_image.name)
 
         saver = tf.train.Saver()
 
@@ -130,5 +131,5 @@ print("--------------------------------------------------------------------")
 # pre2.sr_espcn.get_result(lr_image_dir1)
 # loader_d()
 
-sr_espcn1 = SR_ESPCN(2, 'logdir_2x/train', )
+sr_espcn1 = SR_ESPCN(2, 'logdir_2x/train')
 sr_espcn1.get_result(lr_image_dir1)

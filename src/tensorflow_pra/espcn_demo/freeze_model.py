@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+import time
 import tensorflow as tf
 from tensorflow.python.framework.graph_util import convert_variables_to_constants
 from tensorflow.python.platform import gfile
@@ -41,7 +42,12 @@ def freeze():
         lr_image_batch = np.zeros((1,) + lr_image_y_data.shape)
         lr_image_batch[0] = lr_image_y_data
 
+
+
         sr_image = net.generate(lr_image)
+
+        print(lr_image.name)
+        print(sr_image.name)
 
         saver = tf.train.Saver()
         try:
@@ -56,9 +62,15 @@ def freeze():
             print("[*] Checkpoint load failed/no checkpoint found")
             return
 
+        t_variables = tf.trainable_variables()
+        print(t_variables)
+
         graph_def = tf.get_default_graph().as_graph_def()
 
+        print(graph_def)
+
         GraphDef = convert_variables_to_constants(sess, graph_def, ['Cast_2'])
+        print(GraphDef)
 
         with tf.gfile.FastGFile('espcn_value3x.pb', "w") as f:
             f.write(GraphDef.SerializeToString())
@@ -66,15 +78,52 @@ def freeze():
 
 
 def test_read():
+    model_pb = "espcn_value3x.pb"
+    lr_image_dir = 'F:/code/other/ml/ESPCN-TensorFlow/images/butterfly_GT.jpg'
+    out_path = "test_pb_butterfly"
+    ratio = 3
+    p_edge = 8
     with tf.Session() as sess:
-        with gfile.FastGFile("espcn_value3x.pb","rb") as f:
+        with gfile.FastGFile(model_pb,"rb") as f:
             grah_def = tf.GraphDef()
             grah_def.ParseFromString(f.read())
-            print(grah_def)
             tf.import_graph_def(grah_def)
+            # print(tf.get_default_graph().as_graph_def())
 
-            input_tensor = sess.graph.get_tensor_by_name('Placeholder:0')
-            out_tensor = tf.get_default_graph().get_tensor_by_name("Cast_2:0")
+            input_tensor = sess.graph.get_tensor_by_name('import/Placeholder:0')
+            out_tensor = tf.get_default_graph().get_tensor_by_name("import/Cast_2:0")
+
+
+
+            lr_image_data = misc.imread(lr_image_dir)
+            lr_image_ycbcr_data = rgb2ycbcr(lr_image_data)
+            lr_image_y_data = lr_image_ycbcr_data[:, :, 0:1]
+
+            lr_image_batch = np.zeros((1,) + lr_image_y_data.shape)
+            lr_image_batch[0] = lr_image_y_data
+
+            time1 = time.time()
+
+            sr_image_y_data = out_tensor.eval(feed_dict={input_tensor:lr_image_batch})
+            print(sr_image_y_data)
+            time2 = time.time()
+            print("sess run success.................",time2 - time1)
+
+            sr_image_y_data = shuffle(sr_image_y_data[0], ratio)
+            sr_image_ycbcr_data = misc.imresize(lr_image_ycbcr_data,
+                                                ratio * np.array(lr_image_data.shape[0:2]),
+                                                'bicubic')
+
+            edge = int(p_edge * ratio / 2)
+
+            sr_image_ycbcr_data = np.concatenate((sr_image_y_data, sr_image_ycbcr_data[edge:-edge, edge:-edge, 1:3]),
+                                                 axis=2)
+            sr_image_data = ycbcr2rgb(sr_image_ycbcr_data)
+
+            time3 = time.time()
+            print('image trans...',time3-time2)
+
+            misc.imsave(out_path + '.png', sr_image_data)
 
 
 

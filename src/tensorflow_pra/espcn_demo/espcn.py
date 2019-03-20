@@ -136,7 +136,7 @@ class ESPCN:
         return reduced_loss
 
     def generate(self, lr_image):
-        print(tf.get_default_graph())
+
         lr_image = self.preprocess([lr_image, None])[0]
         sr_image = self.create_network(lr_image)
         sr_image = sr_image * 255.0

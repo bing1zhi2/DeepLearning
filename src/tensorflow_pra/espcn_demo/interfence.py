@@ -63,6 +63,7 @@ def generate():
     lr_image_batch[0] = lr_image_y_data
 
     sr_image = net.generate(lr_image)
+    print(sr_image.name)
 
     saver = tf.train.Saver()
     try:
@@ -77,6 +78,7 @@ def generate():
         return
 
     sr_image_y_data = sess.run(sr_image, feed_dict={lr_image: lr_image_batch})
+    print('sess run success .....................')
 
     sr_image_y_data = shuffle(sr_image_y_data[0], params['ratio'])
     sr_image_ycbcr_data = misc.imresize(lr_image_ycbcr_data,

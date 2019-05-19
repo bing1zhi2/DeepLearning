@@ -8,7 +8,7 @@ import argparse
 def main(args):
     a = args.image_files
     b = args.first_conv
-    print a, b
+    print(a, b)
 
 
 def parse_arguments(argv):

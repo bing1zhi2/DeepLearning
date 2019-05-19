@@ -4,10 +4,11 @@ import random
 
 g_root_path = "D:/VOCdevkit/VOC2007/"
 g_root_path = "E:/dataset/my_CSCs_data/mylabel_data/pascalvoc_cscs/"
+g_root_path = "H:/4c_dropper_data/4c_dropper/4c_dropper"
 xmlfilepath = "Annotations"  # 标注文件存放路径
 saveBasePath = "ImageSets/Main/"  # ImageSets信息生成路径
-trainval_percent = 0.7
-train_percent = 0.7
+trainval_percent = 0.9
+train_percent = 0.9
 
 
 

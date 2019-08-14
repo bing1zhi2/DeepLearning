@@ -10,7 +10,7 @@ from tensorflow.python.framework import dtypes
 
 input_model = 'F:\\dataset\\facenet\\model\\20180402-114759\\20180402-114759.pb'
 input_model = 'F:\\dataset\\pre_train_model\\wdsr\\saved_model.pb'
-input_model = 'F:\\code\\mycode\\tensorflow_learn\\src\\tensorflow_pra\\serving\\temp\\1\saved_model.pb'
+input_model = 'F:\\code\\mycode\\DeepLearning\\src\\tensorflow_pra\\serving\\temp\\1\saved_model.pb'
 
 def cpu2mlu(graph_def):
     for node in graph_def.node:

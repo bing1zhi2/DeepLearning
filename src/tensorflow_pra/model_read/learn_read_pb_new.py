@@ -8,7 +8,7 @@ from tensorflow.python.framework import tensor_util
 from tensorflow.python.framework import dtypes
 
 
-input_model_dir = 'F:\\code\\mycode\\tensorflow_learn\\src\\tensorflow_pra\\serving\\temp\\1'
+input_model_dir = 'F:\\code\\mycode\\DeepLearning\\src\\tensorflow_pra\\serving\\temp\\1'
 
 def cpu2mlu(graph_def):
     for node in graph_def.node:

@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
 class LeNet(nn.Module):
 
     def __init__(self):
@@ -35,6 +36,7 @@ class LeNet(nn.Module):
             num_features *= s
 
         return num_features
+
 
 net = LeNet()
 print(net)

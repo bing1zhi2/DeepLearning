@@ -22,3 +22,13 @@ print(bb)
 cc = aa.view([1, -1])
 
 print(cc)
+
+
+a = torch.Tensor([[1, 2], [3, 4], [5, 6]])
+print(a)
+b = a.argmax(dim=1,keepdim=True)
+print(b)
+b = a.argmax(dim=0,keepdim=True)
+print(b)
+b = a.argmax(dim=0,keepdim=False)
+print(b)

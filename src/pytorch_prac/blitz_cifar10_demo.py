@@ -70,6 +70,8 @@ classes = ('plane', 'car', 'bird', 'cat',
 dataiter = iter(trainloader)
 images, labels = dataiter.next()
 
+print(images.shape)
+
 # show images
 imshow(torchvision.utils.make_grid(images))
 # print labels
@@ -127,7 +129,7 @@ for epoch in range(1):
 
         # print statistics
         # print statistics
-        running_loss += loss.item()
+        # running_loss += loss.item()
         if i % 2000 == 1999:  # print every 2000 mini-batches
             print('[%d, %5d] loss: %.3f' %
                   (epoch + 1, i + 1, running_loss / 2000))

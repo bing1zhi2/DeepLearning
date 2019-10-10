@@ -11,65 +11,81 @@ import numpy as np
 
 # functions to show an image
 
-data_dir = "D:\dataset\sifar10"
+
+def try_usr_cifar10():
+    data_dir = "D:\dataset\sifar10"
 
 
-def imshow(img):
-    img = img / 2 + 0.5  # unnormalize
-    npimg = img.numpy()
-    plt.imshow(np.transpose(npimg, (1, 2, 0)))
-    plt.show()
+    transform = transforms.Compose(
+        [transforms.Scale(256),
+         transforms.CenterCrop(224),
+         transforms.ToTensor(),
+         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
+    trainset = torchvision.datasets.CIFAR10(root=data_dir, train=True,
+                                            download=True, transform=transform)
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=4,
+                                              shuffle=True, num_workers=0)
 
-transform = transforms.Compose(
-    [transforms.Scale(256),
-     transforms.CenterCrop(224),
-     transforms.ToTensor(),
-     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+    testset = torchvision.datasets.CIFAR10(root=data_dir, train=False,
+                                           download=True, transform=transform)
+    testloader = torch.utils.data.DataLoader(testset, batch_size=4,
+                                             shuffle=False, num_workers=0)
 
-trainset = torchvision.datasets.CIFAR10(root=data_dir, train=True,
-                                        download=True, transform=transform)
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=4,
-                                          shuffle=True, num_workers=0)
+    print("=> creating model '{}'".format(""))
+    model = models.__dict__["densenet121"]()
+    print(model)
 
-testset = torchvision.datasets.CIFAR10(root=data_dir, train=False,
-                                       download=True, transform=transform)
-testloader = torch.utils.data.DataLoader(testset, batch_size=4,
-                                         shuffle=False, num_workers=0)
+    # model = torch.nn.DataParallel(model).cuda()
 
-print("=> creating model '{}'".format(""))
-model = models.__dict__["densenet121"]()
-print(model)
+    # define loss function (criterion) and pptimizer
+    criterion = nn.CrossEntropyLoss().cuda()
+    optimizer = torch.optim.SGD(model.parameters(), 0.001,
+                                    momentum=0.9,
+                                    weight_decay=1e-4)
 
-# model = torch.nn.DataParallel(model).cuda()
+    for epoch in range(1):
+        running_loss = 0
 
-# define loss function (criterion) and pptimizer
-criterion = nn.CrossEntropyLoss().cuda()
-optimizer = torch.optim.SGD(model.parameters(), 0.001,
-                                momentum=0.9,
-                                weight_decay=1e-4)
+        for i,data in enumerate(trainloader):
+            inputs, targets = data
 
-for epoch in range(1):
-    running_loss = 0
+            # targets = targets.cuda(async=True)
+            input_var = torch.autograd.Variable(inputs)
+            target_var = torch.autograd.Variable(targets)
 
-    for i,data in enumerate(trainloader):
-        inputs, targets = data
+            output = model(input_var)
+            loss = criterion(output, target_var)
 
-        # targets = targets.cuda(async=True)
-        input_var = torch.autograd.Variable(inputs)
-        target_var = torch.autograd.Variable(targets)
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
 
-        output = model(input_var)
-        loss = criterion(output, target_var)
+            running_loss += loss.item()
 
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
+            print(running_loss)
+            if i % 10 == 9:  # print every 2000 mini-batches
+                print('[%d, %5d] loss: %.3f' %
+                      (epoch + 1, i + 1, running_loss / 10))
+                running_loss = 0.0
+def try_size():
+    # Download and load the pretrained ResNet-18.
+    resnet = torchvision.models.resnet18(pretrained=False)
+    densenet = torchvision.models.densenet121(pretrained=True)
+    print(densenet)
 
-        running_loss += loss.item()
+    # If you want to finetune only the top layer of the model, set as below.
+    for param in densenet.parameters():
+        param.requires_grad = False
 
-        print(running_loss)
-        if i % 10 == 9:  # print every 2000 mini-batches
-            print('[%d, %5d] loss: %.3f' %
-                  (epoch + 1, i + 1, running_loss / 10))
-            running_loss = 0.0
+    a = densenet.classifier.in_features
+    print(a)
+    # Replace the top layer for finetuning.
+    # densenet = nn.Linear(densenet.classifier.in_features, 100)  # 100 is an example.
+
+    # Forward pass.
+    images = torch.randn(64, 3, 244, 244)
+    outputs = densenet(images)
+    print(outputs.size())  # (64, 100)
+
+try_size()

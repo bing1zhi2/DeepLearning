@@ -40,6 +40,7 @@ import numpy as np
 # functions to show an image
 
 data_dir = "D:\dataset\sifar10"
+# data_dir = "/media/chenhao/instal/dataset/sifar10"
 
 
 def imshow(img):

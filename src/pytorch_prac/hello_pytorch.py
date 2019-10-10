@@ -7,6 +7,7 @@ print(a)
 a = torch.randn((2, 3))
 
 print(a)
+print("a[0,2]:")
 print(a[0, 2])
 
 b_numpy = a.numpy()
@@ -32,3 +33,9 @@ b = a.argmax(dim=0,keepdim=True)
 print(b)
 b = a.argmax(dim=0,keepdim=False)
 print(b)
+
+cc = torch.Tensor([[1, 2], [3, 4], [5, 6]])
+
+sf = torch.stack((a,cc), dim=1)
+print(sf.shape)
+print(sf)
